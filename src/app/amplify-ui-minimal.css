@@ -1,0 +1,220 @@
+/* Styles minimaux pour Amplify UI - contournement du problème lightningcss */
+
+/* Variables CSS de base */
+:root {
+  --amplify-colors-brand-primary-10: #e6f3ff;
+  --amplify-colors-brand-primary-80: #007eb9;
+  --amplify-colors-brand-primary-100: #005f8a;
+  --amplify-colors-neutral-10: #f8f9fa;
+  --amplify-colors-neutral-20: #e9ecef;
+  --amplify-colors-neutral-60: #6c757d;
+  --amplify-colors-neutral-80: #343a40;
+  --amplify-colors-neutral-100: #212529;
+  --amplify-colors-white: #ffffff;
+  --amplify-colors-red-60: #dc3545;
+  --amplify-colors-green-60: #28a745;
+  --amplify-colors-orange-60: #fd7e14;
+  --amplify-space-small: 0.5rem;
+  --amplify-space-medium: 1rem;
+  --amplify-space-large: 1.5rem;
+  --amplify-space-xl: 2rem;
+  --amplify-space-xxs: 0.125rem;
+  --amplify-space-xs: 0.25rem;
+  --amplify-radii-small: 0.25rem;
+  --amplify-radii-medium: 0.375rem;
+  --amplify-radii-large: 0.5rem;
+  --amplify-font-sizes-small: 0.875rem;
+  --amplify-font-sizes-medium: 1rem;
+  --amplify-font-sizes-large: 1.125rem;
+  --amplify-font-weights-normal: 400;
+  --amplify-font-weights-bold: 700;
+  --amplify-line-heights-small: 1.25;
+  --amplify-line-heights-medium: 1.5;
+  --amplify-shadows-small: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --amplify-shadows-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --amplify-shadows-large: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset et base */
+* {
+  box-sizing: border-box;
+}
+
+/* Card */
+[data-amplify-card] {
+  background-color: var(--amplify-colors-white);
+  border: 1px solid var(--amplify-colors-neutral-20);
+  border-radius: var(--amplify-radii-medium);
+  box-shadow: var(--amplify-shadows-small);
+  padding: var(--amplify-space-medium);
+  transition: box-shadow 0.2s ease;
+}
+
+[data-amplify-card][data-variation="elevated"] {
+  box-shadow: var(--amplify-shadows-medium);
+}
+
+[data-amplify-card]:hover {
+  box-shadow: var(--amplify-shadows-large);
+}
+
+/* Button */
+[data-amplify-button] {
+  background-color: var(--amplify-colors-brand-primary-80);
+  border: 1px solid var(--amplify-colors-brand-primary-80);
+  border-radius: var(--amplify-radii-small);
+  color: var(--amplify-colors-white);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--amplify-font-sizes-medium);
+  font-weight: var(--amplify-font-weights-normal);
+  line-height: var(--amplify-line-heights-medium);
+  padding: var(--amplify-space-small) var(--amplify-space-medium);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  min-height: 2.5rem;
+}
+
+[data-amplify-button]:hover {
+  background-color: var(--amplify-colors-brand-primary-100);
+  border-color: var(--amplify-colors-brand-primary-100);
+}
+
+[data-amplify-button][data-size="small"] {
+  font-size: var(--amplify-font-sizes-small);
+  padding: var(--amplify-space-xs) var(--amplify-space-small);
+  min-height: 2rem;
+}
+
+[data-amplify-button][data-size="large"] {
+  font-size: var(--amplify-font-sizes-large);
+  padding: var(--amplify-space-medium) var(--amplify-space-large);
+  min-height: 3rem;
+}
+
+/* Text */
+[data-amplify-text] {
+  color: var(--amplify-colors-neutral-80);
+  font-size: var(--amplify-font-sizes-medium);
+  line-height: var(--amplify-line-heights-medium);
+  margin: 0;
+}
+
+[data-amplify-text][data-font-size="small"] {
+  font-size: var(--amplify-font-sizes-small);
+}
+
+[data-amplify-text][data-font-size="large"] {
+  font-size: var(--amplify-font-sizes-large);
+}
+
+[data-amplify-text][data-font-weight="bold"] {
+  font-weight: var(--amplify-font-weights-bold);
+}
+
+[data-amplify-text][data-color="#666"] {
+  color: var(--amplify-colors-neutral-60);
+}
+
+[data-amplify-text][data-color="#333"] {
+  color: var(--amplify-colors-neutral-80);
+}
+
+/* Flex */
+[data-amplify-flex] {
+  display: flex;
+}
+
+[data-amplify-flex][data-direction="column"] {
+  flex-direction: column;
+}
+
+[data-amplify-flex][data-direction="row"] {
+  flex-direction: row;
+}
+
+[data-amplify-flex][data-align-items="center"] {
+  align-items: center;
+}
+
+[data-amplify-flex][data-justify-content="center"] {
+  justify-content: center;
+}
+
+[data-amplify-flex][data-gap="small"] {
+  gap: var(--amplify-space-small);
+}
+
+[data-amplify-flex][data-gap="medium"] {
+  gap: var(--amplify-space-medium);
+}
+
+[data-amplify-flex][data-gap="large"] {
+  gap: var(--amplify-space-large);
+}
+
+[data-amplify-flex][data-gap="xxs"] {
+  gap: var(--amplify-space-xxs);
+}
+
+[data-amplify-flex][data-gap="xs"] {
+  gap: var(--amplify-space-xs);
+}
+
+/* View */
+[data-amplify-view] {
+  display: block;
+}
+
+[data-amplify-view][data-text-align="center"] {
+  text-align: center;
+}
+
+/* Image */
+[data-amplify-image] {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Badge */
+[data-amplify-badge] {
+  background-color: var(--amplify-colors-neutral-20);
+  border-radius: var(--amplify-radii-small);
+  color: var(--amplify-colors-neutral-80);
+  display: inline-block;
+  font-size: var(--amplify-font-sizes-small);
+  font-weight: var(--amplify-font-weights-normal);
+  padding: var(--amplify-space-xxs) var(--amplify-space-xs);
+  text-align: center;
+  white-space: nowrap;
+}
+
+[data-amplify-badge][data-variation="success"] {
+  background-color: var(--amplify-colors-green-60);
+  color: var(--amplify-colors-white);
+}
+
+[data-amplify-badge][data-variation="warning"] {
+  background-color: var(--amplify-colors-orange-60);
+  color: var(--amplify-colors-white);
+}
+
+[data-amplify-badge][data-variation="error"] {
+  background-color: var(--amplify-colors-red-60);
+  color: var(--amplify-colors-white);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  [data-amplify-card] {
+    padding: var(--amplify-space-small);
+  }
+  
+  [data-amplify-button] {
+    min-height: 2.25rem;
+    padding: var(--amplify-space-xs) var(--amplify-space-small);
+  }
+}
