@@ -23,14 +23,23 @@ export const familyMembers: Person[] = [
       },
       {
         partnerId: 'spouse-002',
-        type: 'marriage',
+        type: 'relationship',
+        status: 'past',
+        startDate: '2016-04-12',
+        endDate: '2017-08-25',
+        hasChildren: false,
+        isLegalUnion: false
+      },
+      {
+        partnerId: 'spouse-003',
+        type: 'relationship',
         status: 'current',
-        startDate: '2017-09-20',
-        hasChildren: true,
-        isLegalUnion: true
+        startDate: '2018-01-10',
+        hasChildren: false,
+        isLegalUnion: false
       }
     ],
-    spouseId: 'spouse-002', // Rétrocompatibilité - épouse actuelle
+    // spouseId: 'spouse-003', // Rétrocompatibilité - remplacé par relationships
     parentIds: ['father-001', 'mother-001'],
     childrenIds: ['child-001', 'child-002', 'child-003', 'child-004'],
     occupation: 'Ingénieur logiciel',
@@ -47,22 +56,35 @@ export const familyMembers: Person[] = [
     birthDate: '1987-08-22',
     birthPlace: 'Lyon, France',
     // avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b550?w=150&h=150&fit=crop&crop=face',
-    spouseId: 'user-001',
+    // spouseId: 'user-001', // Remplacé par relationships dans user-001
     parentIds: ['father-spouse-001', 'mother-spouse-001'],
-    childrenIds: ['child-001', 'child-002'],
+    childrenIds: ['child-001', 'child-002', 'child-003', 'child-004'],
     occupation: 'Médecin',
     generation: 0,
   },
   {
     id: 'spouse-002',
+    firstName: 'Isabelle',
+    lastName: 'Moreau',
+    birthDate: '1988-11-08',
+    birthPlace: 'Toulouse, France',
+    // avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+    // spouseId: 'user-001', // Remplacé par relationships dans user-001
+    parentIds: ['father-isabelle', 'mother-isabelle'],
+    childrenIds: [],
+    occupation: 'Architecte',
+    generation: 0,
+  },
+  {
+    id: 'spouse-003',
     firstName: 'Sarah',
     lastName: 'Martin',
     maidenName: 'Lefebvre',
     birthDate: '1990-05-12',
     birthPlace: 'Marseille, France',
-    spouseId: 'user-001',
+    // spouseId: 'user-001', // Remplacé par relationships dans user-001
     parentIds: ['father-sarah', 'mother-sarah'],
-    childrenIds: ['child-003', 'child-004'],
+    childrenIds: [],
     occupation: 'Avocate',
     generation: 0,
   },
@@ -100,7 +122,7 @@ export const familyMembers: Person[] = [
     lastName: 'Martin',
     birthDate: '2019-09-10',
     birthPlace: 'Paris, France',
-    parentIds: ['user-001', 'spouse-002'],
+    parentIds: ['user-001', 'spouse-001'],
     occupation: 'Lycéen',
     generation: 1,
   },
@@ -110,7 +132,7 @@ export const familyMembers: Person[] = [
     lastName: 'Martin',
     birthDate: '2021-12-03',
     birthPlace: 'Paris, France',
-    parentIds: ['user-001', 'spouse-002'],
+    parentIds: ['user-001', 'spouse-001'],
     occupation: 'Collégienne',
     generation: 1,
   },
@@ -597,9 +619,36 @@ export const familyMembers: Person[] = [
     generation: -1,
   },
 
-  // === PARENTS DE SARAH (ÉPOUSE ACTUELLE DE JEAN) ===
+  // === PARENTS D'ISABELLE (2ÈME RELATION DE JEAN) ===
   
-  // Parents de Sarah Lefebvre (épouse actuelle de Jean)
+  // Parents d'Isabelle Moreau (2ème relation de Jean)
+  {
+    id: 'father-isabelle',
+    firstName: 'Alain',
+    lastName: 'Moreau',
+    birthDate: '1960-03-18',
+    birthPlace: 'Toulouse, France',
+    spouseId: 'mother-isabelle',
+    childrenIds: ['spouse-002'],
+    occupation: 'Ingénieur Civil',
+    generation: -1,
+  },
+  {
+    id: 'mother-isabelle',
+    firstName: 'Monique',
+    lastName: 'Moreau',
+    maidenName: 'Garcia',
+    birthDate: '1963-07-22',
+    birthPlace: 'Perpignan, France',
+    spouseId: 'father-isabelle',
+    childrenIds: ['spouse-002'],
+    occupation: 'Enseignante',
+    generation: -1,
+  },
+
+  // === PARENTS DE SARAH (CONJOINTE ACTUELLE DE JEAN) ===
+  
+  // Parents de Sarah Lefebvre (conjointe actuelle de Jean)
   {
     id: 'father-sarah',
     firstName: 'François',
@@ -607,7 +656,7 @@ export const familyMembers: Person[] = [
     birthDate: '1963-11-15',
     birthPlace: 'Toulon, France',
     spouseId: 'mother-sarah',
-    childrenIds: ['spouse-002'],
+    childrenIds: ['spouse-003'],
     occupation: 'Capitaine de Marine',
     generation: -1,
   },
@@ -619,7 +668,7 @@ export const familyMembers: Person[] = [
     birthDate: '1965-02-28',
     birthPlace: 'Aix-en-Provence, France',
     spouseId: 'father-sarah',
-    childrenIds: ['spouse-002'],
+    childrenIds: ['spouse-003'],
     occupation: 'Professeure de Littérature',
     generation: -1,
   },
@@ -864,9 +913,10 @@ export const familyMembers: Person[] = [
 
 // Connexions familiales
 export const familyConnections: FamilyConnection[] = [
-  // Mariages
+  // Mariages et relations
   { id: 'conn-001', type: 'spouse', person1Id: 'user-001', person2Id: 'spouse-001', startDate: '2008-06-15' },
-  { id: 'conn-043', type: 'spouse', person1Id: 'user-001', person2Id: 'spouse-002', startDate: '2017-09-20' },
+  { id: 'conn-043', type: 'relationship', person1Id: 'user-001', person2Id: 'spouse-002', startDate: '2016-04-12' },
+  { id: 'conn-044', type: 'relationship', person1Id: 'user-001', person2Id: 'spouse-003', startDate: '2018-01-10' },
   { id: 'conn-002', type: 'spouse', person1Id: 'father-001', person2Id: 'mother-001', startDate: '1980-05-12' },
   { id: 'conn-003', type: 'spouse', person1Id: 'father-spouse-001', person2Id: 'mother-spouse-001', startDate: '1985-09-20' },
   { id: 'conn-004', type: 'spouse', person1Id: 'grandfather-pat-001', person2Id: 'grandmother-pat-001', startDate: '1950-07-10' },
@@ -886,9 +936,9 @@ export const familyConnections: FamilyConnection[] = [
   { id: 'conn-012', type: 'parent-child', person1Id: 'user-001', person2Id: 'child-002' },
   { id: 'conn-013', type: 'parent-child', person1Id: 'spouse-001', person2Id: 'child-002' },
   { id: 'conn-034', type: 'parent-child', person1Id: 'user-001', person2Id: 'child-003' },
-  { id: 'conn-035', type: 'parent-child', person1Id: 'spouse-002', person2Id: 'child-003' },
+  { id: 'conn-035', type: 'parent-child', person1Id: 'spouse-001', person2Id: 'child-003' },
   { id: 'conn-036', type: 'parent-child', person1Id: 'user-001', person2Id: 'child-004' },
-  { id: 'conn-037', type: 'parent-child', person1Id: 'spouse-002', person2Id: 'child-004' },
+  { id: 'conn-037', type: 'parent-child', person1Id: 'spouse-001', person2Id: 'child-004' },
   { id: 'conn-014', type: 'parent-child', person1Id: 'child-001', person2Id: 'grandchild-001' },
   { id: 'conn-015', type: 'parent-child', person1Id: 'sibling-001', person2Id: 'nephew-001' },
   

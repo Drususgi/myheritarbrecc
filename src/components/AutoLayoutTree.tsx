@@ -85,6 +85,7 @@ const AutoLayoutTree: React.FC<AutoLayoutTreeProps> = ({
     if (focalPerson.spouseId && !spouseIds.includes(focalPerson.spouseId)) {
       spouseIds.push(focalPerson.spouseId);
     }
+    // console.log('DEBUG - spouseIds for', focalPerson.firstName, ':', spouseIds);
     
     // Fratrie : personnes qui partagent au moins un parent avec la personne focale
     const siblingIds = familyTreeData.people.filter(p => {

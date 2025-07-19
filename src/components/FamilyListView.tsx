@@ -107,7 +107,10 @@ const FamilyListView: React.FC<FamilyListViewProps> = ({
             category = 'siblings';
           }
           else if (relationship.includes('Belle-sœur') || relationship.includes('Beau-frère')) category = 'siblings_spouses';
-          else if (relationship.includes('Épou') || relationship.includes('Compag')) category = 'spouses';
+          else if (relationship.includes('Épou') || relationship.includes('épou') || 
+                   relationship.includes('Compag') || relationship.includes('compag')) {
+            category = 'spouses';
+          }
           else if (relationship.includes('Fils') || relationship.includes('Fille')) category = 'children';
           else if (relationship.includes('Belle-fille') || relationship.includes('Gendre')) category = 'inlaws';
           else if (relationship.includes('Neveu') || relationship.includes('Nièce')) category = 'nephews_nieces';
