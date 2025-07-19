@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import StackedCards from './StackedCards';
 import MyHeritageCard from './MyHeritageCard';
-import { Person } from '@/types/family';
+import { Person, ParentType } from '@/types/family';
 import { Connection } from '@/types/layout';
 
 interface FamilyGroup {
@@ -23,6 +23,7 @@ interface FamilyTreeFrameProps {
   getRelationshipLabel: (personId: string) => string;
   frameStyle?: React.CSSProperties;
   isActive?: boolean;
+  getParentType?: (personId: string) => ParentType | undefined;
 }
 
 const FamilyTreeFrame: React.FC<FamilyTreeFrameProps> = ({
@@ -35,7 +36,8 @@ const FamilyTreeFrame: React.FC<FamilyTreeFrameProps> = ({
   selectedPersonId,
   getRelationshipLabel,
   frameStyle,
-  isActive = true
+  isActive = true,
+  getParentType
 }) => {
   const handlePersonClick = (person: Person) => {
     if (onPersonClick) {
@@ -116,8 +118,8 @@ const FamilyTreeFrame: React.FC<FamilyTreeFrameProps> = ({
         opacity: isActive ? 1 : 0.6,
         transition: 'opacity 0.3s ease-in-out'
       }}>
-        {/* Connexions */}
-        <svg
+        {/* Connexions désactivées temporairement */}
+        {/* <svg
           style={{
             position: 'absolute',
             top: 0,
@@ -129,7 +131,7 @@ const FamilyTreeFrame: React.FC<FamilyTreeFrameProps> = ({
           }}
         >
           {renderConnections(connections)}
-        </svg>
+        </svg> */}
 
         {/* Cartes empilées */}
         {Object.entries(stackedGroups).map(([groupName, group]) => {
@@ -148,6 +150,9 @@ const FamilyTreeFrame: React.FC<FamilyTreeFrameProps> = ({
               selectedPersonId={selectedPersonId}
               getRelationshipLabel={getRelationshipLabel}
               stackType={group.stackType}
+              groupType={groupName}
+              allPeople={people}
+              getParentType={getParentType}
             />
           );
         })}
@@ -174,6 +179,7 @@ const FamilyTreeFrame: React.FC<FamilyTreeFrameProps> = ({
                 onClick={handlePersonClick}
                 isSelected={selectedPersonId === person.id}
                 relationship={getRelationshipLabel(person.id)}
+                parentType={getParentType ? getParentType(person.id) : undefined}
               />
             </div>
           );

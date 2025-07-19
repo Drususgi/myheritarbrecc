@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import MyHeritageCard from './MyHeritageCard';
-import { Person } from '@/types/family';
+import { Person, ParentType } from '@/types/family';
+import { getOrderedPartners } from '@/utils/relationshipUtils';
 
 interface StackedCardsProps {
   people: Person[];
@@ -11,6 +12,9 @@ interface StackedCardsProps {
   selectedPersonId?: string;
   getRelationshipLabel: (personId: string) => string;
   stackType: 'horizontal' | 'vertical';
+  groupType?: string; // Pour identifier le type de groupe (ex: 'spouses')
+  allPeople?: Person[]; // Liste complète pour le tri chronologique
+  getParentType?: (personId: string) => ParentType | undefined; // Fonction pour obtenir le type de parenté
 }
 
 const StackedCards: React.FC<StackedCardsProps> = ({
@@ -19,9 +23,44 @@ const StackedCards: React.FC<StackedCardsProps> = ({
   onPersonClick,
   selectedPersonId,
   getRelationshipLabel,
-  stackType = 'horizontal'
+  stackType = 'horizontal',
+  groupType,
+  allPeople,
+  getParentType
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  
+  // Trier les personnes selon le type de groupe
+  const sortedPeople = React.useMemo(() => {
+    if ((groupType === 'spouses' || groupType === 'partners') && allPeople) {
+      // Pour les conjoints/partenaires, utiliser l'ordre chronologique
+      // Trouver la personne de référence (utilisateur ou membre de famille avec relations)
+      const referencePerson = allPeople.find(p => 
+        p.isCurrentUser || (p.relationships && p.relationships.length > 0 &&
+        p.relationships.some(rel => people.some(person => person.id === rel.partnerId)))
+      );
+      
+      if (referencePerson && referencePerson.relationships) {
+        const orderedPartners = getOrderedPartners(referencePerson, allPeople);
+        // Filtrer pour ne garder que ceux qui sont dans le groupe
+        return orderedPartners.filter(partner => 
+          people.some(p => p.id === partner.id)
+        );
+      }
+    } else if (groupType === 'siblings') {
+      // Pour la fratrie, mettre l'utilisateur (Moi) au sommet
+      const currentUser = people.find(p => p.isCurrentUser);
+      const otherSiblings = people.filter(p => !p.isCurrentUser);
+      
+      if (currentUser) {
+        // Utilisateur en premier, puis les autres dans l'ordre original
+        return [currentUser, ...otherSiblings];
+      }
+    }
+    // Pour les autres groupes, garder l'ordre original
+    return people;
+  }, [people, groupType, allPeople]);
+
   const [topCardIndex, setTopCardIndex] = useState(0); // Index de la carte du dessus
 
   const handleStackClick = (e: React.MouseEvent) => {
@@ -94,7 +133,7 @@ const StackedCards: React.FC<StackedCardsProps> = ({
       onClick={!isExpanded ? handleStackClick : undefined}
     >
       {/* Indicateur visuel pour pile fermée */}
-      {!isExpanded && people.length > 1 && (
+      {!isExpanded && sortedPeople.length > 1 && (
         <div
           style={{
             position: 'absolute',
@@ -114,13 +153,13 @@ const StackedCards: React.FC<StackedCardsProps> = ({
             boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
           }}
         >
-          {people.length}
+          {sortedPeople.length}
         </div>
       )}
 
       {/* Cartes */}
-      {people.map((person, index) => {
-        const cardPos = getCardPosition(index, people.length);
+      {sortedPeople.map((person, index) => {
+        const cardPos = getCardPosition(index, sortedPeople.length);
         return (
           <div
             key={person.id}
@@ -140,6 +179,7 @@ const StackedCards: React.FC<StackedCardsProps> = ({
               onClick={isExpanded ? undefined : onPersonClick}
               isSelected={selectedPersonId === person.id}
               relationship={getRelationshipLabel(person.id)}
+              parentType={getParentType ? getParentType(person.id) : undefined}
             />
           </div>
         );

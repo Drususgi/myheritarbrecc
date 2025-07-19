@@ -1,5 +1,40 @@
 // Types pour l'arbre généalogique
 
+export type RelationshipType = 
+  | 'marriage'      // Mariage officiel
+  | 'partnership'   // Union libre / PACS
+  | 'relationship'  // Relation amoureuse
+  | 'divorced'      // Divorcé(e)
+  | 'separated'     // Séparé(e)
+  | 'widowed'       // Veuf/Veuve
+  | 'ended';        // Relation terminée
+
+export type RelationshipStatus = 'current' | 'past';
+
+export type ParentType = 
+  | 'biological'    // Parent biologique
+  | 'adoptive'      // Parent adoptif
+  | 'step'          // Beau-parent
+  | 'foster'        // Famille d'accueil
+  | 'guardian';     // Tuteur légal
+
+export interface ParentRelationship {
+  parentId: string;
+  type: ParentType;
+  isLegal?: boolean; // Reconnaissance légale
+  adoptionDate?: string; // Date d'adoption si applicable
+}
+
+export interface PersonRelationship {
+  partnerId: string;
+  type: RelationshipType;
+  status: RelationshipStatus;
+  startDate?: string; // Date approximative de début
+  endDate?: string;   // Date de fin si applicable
+  hasChildren?: boolean; // A eu des enfants ensemble
+  isLegalUnion?: boolean; // Union légale (mariage, PACS)
+}
+
 export interface Person {
   id: string;
   firstName: string;
@@ -12,9 +47,11 @@ export interface Person {
   isCurrentUser?: boolean; // True pour l'utilisateur connecté
   
   // Relations familiales
-  spouseId?: string; // Conjoint actuel
-  exSpouseIds?: string[]; // Ex-conjoints
-  parentIds?: string[]; // Parents [père, mère] ou [parent1, parent2]
+  relationships?: PersonRelationship[]; // Relations amoureuses chronologiques
+  spouseId?: string; // Conjoint actuel (rétrocompatibilité)
+  exSpouseIds?: string[]; // Ex-conjoints (rétrocompatibilité)
+  parentIds?: string[]; // Parents [père, mère] ou [parent1, parent2] (rétrocompatibilité)
+  parentRelationships?: ParentRelationship[]; // Relations parentales détaillées
   childrenIds?: string[]; // Enfants
   
   // Informations supplémentaires

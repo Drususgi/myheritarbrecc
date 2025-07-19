@@ -1,13 +1,15 @@
 'use client';
 
 import React from 'react';
-import { Person } from '@/types/family';
+import { Person, ParentType } from '@/types/family';
+import { getParentTypeColor, getParentTypeLabel } from '@/utils/parentTypeUtils';
 
 interface MyHeritageCardProps {
   person: Person;
   onClick?: (person: Person) => void;
   isSelected?: boolean;
   relationship?: string;
+  parentType?: ParentType; // Type de parenté pour le code couleur
 }
 
 const MyHeritageCard: React.FC<MyHeritageCardProps> = ({
@@ -15,6 +17,7 @@ const MyHeritageCard: React.FC<MyHeritageCardProps> = ({
   onClick,
   isSelected = false,
   relationship,
+  parentType,
 }) => {
   const handleClick = () => {
     if (onClick) {
@@ -48,7 +51,7 @@ const MyHeritageCard: React.FC<MyHeritageCardProps> = ({
       onClick={handleClick}
       style={{
         width: '140px',
-        height: '100px',
+        height: '80px',
         backgroundColor: person.isCurrentUser ? '#e3f2fd' : 'white',
         border: isSelected ? '2px solid #2196F3' : '1px solid #e0e0e0',
         borderRadius: '8px',
@@ -109,55 +112,6 @@ const MyHeritageCard: React.FC<MyHeritageCardProps> = ({
         </div>
       )}
 
-      {/* Années */}
-      <div style={{
-        fontSize: '10px',
-        color: '#666',
-        textAlign: 'center',
-      }}>
-        {getYearRange()}
-      </div>
-
-      {/* Âge */}
-      {person.birthDate && (
-        <div style={{
-          fontSize: '9px',
-          color: '#999',
-          textAlign: 'center',
-        }}>
-          {getAge(person.birthDate, person.deathDate)}
-        </div>
-      )}
-
-      {/* Lieu de naissance */}
-      {person.birthPlace && (
-        <div style={{
-          fontSize: '9px',
-          color: '#999',
-          textAlign: 'center',
-          maxWidth: '120px',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-        }}>
-          📍 {person.birthPlace.split(',')[0]}
-        </div>
-      )}
-
-      {/* Profession */}
-      {person.occupation && (
-        <div style={{
-          fontSize: '9px',
-          color: '#999',
-          textAlign: 'center',
-          maxWidth: '120px',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-        }}>
-          💼 {person.occupation}
-        </div>
-      )}
 
       {/* Badge "Moi" */}
       {person.isCurrentUser && (
@@ -176,20 +130,21 @@ const MyHeritageCard: React.FC<MyHeritageCardProps> = ({
         </div>
       )}
 
-      {/* Badge de relation */}
+      {/* Badge de relation avec code couleur */}
       {relationship && !person.isCurrentUser && (
         <div style={{
           position: 'absolute',
           top: '2px',
           right: '2px',
-          backgroundColor: '#2196F3',
+          backgroundColor: parentType ? getParentTypeColor(parentType) : '#2196F3',
           color: 'white',
           fontSize: '8px',
           padding: '1px 4px',
           borderRadius: '3px',
           fontWeight: 'bold',
+          border: parentType ? `1px solid ${getParentTypeColor(parentType)}` : 'none',
         }}>
-          {relationship}
+          {parentType ? `${relationship} (${getParentTypeLabel(parentType)})` : relationship}
         </div>
       )}
     </div>
